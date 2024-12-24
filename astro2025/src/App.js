@@ -6,6 +6,8 @@ import Lottie from 'react-lottie';
 import animationData from './lottieanime/starynight.json'; // Path to your Lottie file
 import './App.css';
 import pisces from './images/pisces.png';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 function App() {
   const [inputs, setInputs] = useState({
@@ -16,6 +18,7 @@ function App() {
   });
 
   const [showMessage, setShowMessage] = useState(false); // State to toggle form/message
+  const [responseMessage, setResponseMessage] = useState('');
 
   const images = [pisces];
 
@@ -48,32 +51,45 @@ function App() {
     setInputs({ ...inputs, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setShowMessage(true); // Show message when the form is submitted
+
+    try {
+      const response = await fetch('https://emogpt-de4d.onrender.com/api/sendAstroMessage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          placeOfBirth: inputs.place_of_birth,
+          dateOfBirth: inputs.date_of_birth,
+          timeOfBirth: inputs.time_of_birth,
+          currentLocation: inputs.current_location,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch prediction');
+      }
+
+      const data = await response.json();
+      setResponseMessage(data.message || 'Prediction fetched successfully!');
+      setShowMessage(true); // Show message when the form is submitted
+    } catch (error) {
+      console.error('Error:', error);
+      setResponseMessage('An error occurred. Please try again later.');
+      setShowMessage(true);
+    }
   };
 
   const handleRegenerate = () => {
     setShowMessage(false); // Return to the form
+    setResponseMessage('');
   };
 
   return (
     <div className="App">
-{/* 
-<div className="carousel-container">
-  <Slider {...settings}>
-    {images.map((image, index) => (
-      <div key={index}>
-        <img src={image} alt={`Slide ${index + 1}`} className="carousel-image" />
-      </div>
-    ))}
-  </Slider>
-</div>
-*/}
-
-
       <div className="form-container">
-
         <div className="lottie-background">
           <Lottie options={{
             animationData: animationData,
@@ -84,42 +100,28 @@ function App() {
 
         <p>YOUR YEARLY PREDICTION</p>
 
-
         {showMessage ? (
           <div className="message-container">
-            <p>
-              There are many variations of passages of Lorem Ipsum available, but the majority 
-              have suffered alteration in some form, by injected humour, or randomised words 
-              which don't look even slightly believable. If you are going to use a passage of 
-              Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the 
-              middle of text. All the Lorem Ipsum generators on the Internet tend to repeat 
-              predefined chunks as necessary, making this the first true generator on the 
-              Internet. It uses a dictionary of over 200 Latin words, combined with a handful 
-              of model sentence structures, to generate Lorem Ipsum which looks reasonable. 
-              The generated Lorem Ipsum is therefore always free from repetition, injected 
-              humour, or non-characteristic words etc.
-            </p>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {responseMessage}
+            </ReactMarkdown>
             <button className="form-button" onClick={handleRegenerate}>Regenerate Prediction</button>
           </div>
         ) : (
-          <>
-
-
-            <form onSubmit={handleSubmit}>
-              {Object.keys(inputs).map((key, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  name={key}
-                  value={inputs[key]}
-                  onChange={handleChange}
-                  placeholder={`Enter ${key}`}
-                  className="form-input"
-                />
-              ))}
-              <button type="submit" className="form-button">Go</button>
-            </form>
-          </>
+          <form onSubmit={handleSubmit}>
+            {Object.keys(inputs).map((key, index) => (
+              <input
+                key={index}
+                type="text"
+                name={key}
+                value={inputs[key]}
+                onChange={handleChange}
+                placeholder={`Enter ${key}`}
+                className="form-input"
+              />
+            ))}
+            <button type="submit" className="form-button">Go</button>
+          </form>
         )}
       </div>
     </div>
