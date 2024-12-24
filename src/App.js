@@ -19,6 +19,7 @@ function App() {
 
   const [showMessage, setShowMessage] = useState(false); // State to toggle form/message
   const [responseMessage, setResponseMessage] = useState('');
+  const [loading, setLoading] = useState(false); // State to track loading
 
   const images = [pisces];
 
@@ -53,6 +54,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading state to true
 
     try {
       const response = await fetch('https://emogpt-de4d.onrender.com/api/sendAstroMessage', {
@@ -79,6 +81,8 @@ function App() {
       console.error('Error:', error);
       setResponseMessage('An error occurred. Please try again later.');
       setShowMessage(true);
+    } finally {
+      setLoading(false); // Reset loading state after response
     }
   };
 
@@ -120,7 +124,9 @@ function App() {
                 className="form-input"
               />
             ))}
-            <button type="submit" className="form-button">Go</button>
+            <button type="submit" className="form-button" disabled={loading}>
+              {loading ? 'Loading...' : 'Go'}
+            </button>
           </form>
         )}
       </div>
