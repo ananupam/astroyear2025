@@ -105,29 +105,34 @@ function App() {
         <p>YOUR YEARLY PREDICTION</p>
 
         {showMessage ? (
-          <div className="message-container">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {responseMessage}
-            </ReactMarkdown>
-            <button className="form-button" onClick={handleRegenerate}>Regenerate Prediction</button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            {Object.keys(inputs).map((key, index) => (
-              <input
-                key={index}
-                type="text"
-                name={key}
-                value={inputs[key]}
-                onChange={handleChange}
-                placeholder={`Enter ${key}`}
-                className="form-input"
-              />
-            ))}
-            <button type="submit" className="form-button" disabled={loading}>
-              {loading ? 'Loading...' : 'Go'}
-            </button>
-          </form>
+  <div className="message-container">
+    <p>YOUR YEARLY PREDICTION</p>
+    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+      {responseMessage}
+    </ReactMarkdown>
+    <button className="form-button" onClick={handleRegenerate}>
+      Regenerate Prediction
+    </button>
+  </div>
+) : (
+  <form onSubmit={handleSubmit}>
+    {Object.keys(inputs).map((key, index) => (
+      <input
+        key={index}
+        type="text"
+        name={key}
+        value={inputs[key]}
+        onChange={handleChange}
+        placeholder={`Enter ${key}`}
+        className="form-input"
+      />
+    ))}
+    <button type="submit" className="form-button">
+      Submit
+    </button>
+  </form>
+)}
+
         )}
       </div>
     </div>
