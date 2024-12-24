@@ -4,57 +4,106 @@
   font-weight: normal;
   font-style: normal;
 }
-/* General Styling */
-/* Lottie Background */
-.lottie-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1; /* Keep it behind the other elements */
-  overflow: hidden;
-}
 
-/* General Body Styling */
+/* General Styling */
 body {
   font-family: 'Starlight', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: transparent;
+  background: rgb(62,21,109);
+  background: radial-gradient(circle, rgba(62,21,109,0.9206276260504201) 0%, rgba(27,15,66,1) 100%);
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  flex-direction: column;
   font-size: 24px;
   letter-spacing: 8px;
-  position: relative; /* Ensure content appears above the background */
+  height: 100vh; /* Full viewport height */
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Horizontally center */
+  align-items: flex-start; /* Align to the top to allow scrolling */
+  overflow-y: auto; /* Allow scrolling on smaller screens */
+  padding: 0 15px; /* Add some padding for small screens */
 }
 
-/* Form Styling */
+/* Form Container Styling */
 .form-container {
-  background:#fff8e3;
-  padding: 20px;
+  background: #fff8e3;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 15%;
-  margin-top:5%;
+  max-width: 90%; /* Set a maximum width to prevent overflow */
+  width: 600px; /* Default width */
   text-align: center;
-  color: black;
+  position: relative;
+  margin: 20px auto; /* Ensure it centers with some margin for small screens */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  justify-content: center; /* Center contents vertically */
+  align-items: center; /* Center contents horizontally */
+  padding: 15px;
+  overflow: hidden; /* Prevent overflow from the container */
 }
 
+/* Ensure responsiveness on smaller devices */
+@media (max-width: 1024px) {
+  body {
+    font-size: 22px; /* Slightly smaller text on tablets */
+    padding: 0 10px; /* Adjust padding */
+  }
+  .form-container {
+    width: 75%; /* Reduce width for tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 18px; /* Adjust font size for smaller screens */
+    padding: 0 5%; /* Add 5% margin for smaller screens */
+  }
+  .form-container {
+    width: 80%; /* Reduce width for smaller screens */
+    height: auto; /* Allow the container to grow as needed */
+  }
+  .form-input {
+    width: 80%; /* Increase input width on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 16px; /* Smaller font size for very small screens */
+    letter-spacing: 5px; /* Reduce letter spacing */
+    padding: 0 5%; /* Add 5% margin for very small screens */
+  }
+  .form-container {
+    width: 85%; /* Further reduce width for very small screens */
+    height: auto; /* Allow the container to grow on very small screens */
+  }
+  .form-input {
+    width: 90%; /* Make input fields more spacious */
+  }
+  .lottie-animation {
+    height: 150px; /* Reduce animation size */
+  }
+  .form-button {
+    padding: 8px 16px; /* Make button smaller */
+  }
+}
+
+/* Lottie Animation Styling */
+.lottie-animation {
+  width: 100%; /* Fit the container width */
+  height: 200px; /* Adjust height as needed */
+  margin-bottom: 20px; /* Add spacing between the animation and other content */
+}
 
 /* Adjusting spacing between heading elements */
-.form-container h1,
-.form-container h3 {
+.form-container p {
   margin: 0; /* Remove default margin */
   padding: 0;
+  font-size: 35px;
+  font-weight: 800;
   color: #af8e2b; /* Remove any padding */
 }
 
-
+/* Form Input Styling */
 .form-input {
   margin: 10px 0;
   padding: 10px;
@@ -81,3 +130,21 @@ body {
   background-color: #38165e;
 }
 
+/* Message Container Styling */
+.message-container {
+  font-family: Arial, sans-serif; 
+  padding: 6%;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: #fff8e3;
+  /* Removed overflow-y and max-height to allow scrolling outside the message box */
+}
+
+.message-container p {
+  color: #333; /* Neutral text color */
+  font-size: 15px; /* Regular font size */
+  text-align: left; /* Align text to the left */
+  letter-spacing: 1px;
+  font-weight: 400;
+  line-height: 1.5;
+}

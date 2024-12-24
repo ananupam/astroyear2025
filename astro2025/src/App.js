@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Lottie from 'react-lottie';
 import animationData from './lottieanime/starynight.json'; // Path to your Lottie file
 import './App.css';
+import pisces from './images/pisces.png';
 
 function App() {
   const [inputs, setInputs] = useState({
@@ -14,7 +15,9 @@ function App() {
     place_of_birth: ''
   });
 
-  const images = [/* your images array */];
+  const [showMessage, setShowMessage] = useState(false); // State to toggle form/message
+
+  const images = [pisces];
 
   const settings = {
     dots: true,
@@ -47,46 +50,77 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Concatenated output: ${Object.values(inputs).join(' ')}`);
+    setShowMessage(true); // Show message when the form is submitted
+  };
+
+  const handleRegenerate = () => {
+    setShowMessage(false); // Return to the form
   };
 
   return (
     <div className="App">
-      <div className="lottie-background">
-        <Lottie options={{
-          animationData: animationData,
-          loop: true,
-          autoplay: true, // Start the animation automatically
-        }} />
+{/* 
+<div className="carousel-container">
+  <Slider {...settings}>
+    {images.map((image, index) => (
+      <div key={index}>
+        <img src={image} alt={`Slide ${index + 1}`} className="carousel-image" />
       </div>
+    ))}
+  </Slider>
+</div>
+*/}
+
 
       <div className="form-container">
-        <h1>YEARLY PREDICTIONS</h1>
 
-        <div className="carousel-container">
-          <Slider {...settings}>
-            {images.map((image, index) => (
-              <div key={index}>
-                <img src={image} alt={`Slide ${index + 1}`} className="carousel-image" />
-              </div>
-            ))}
-          </Slider>
+        <div className="lottie-background">
+          <Lottie options={{
+            animationData: animationData,
+            loop: true,
+            autoplay: true, // Start the animation automatically
+          }} />
         </div>
 
-        <form onSubmit={handleSubmit}>
-          {Object.keys(inputs).map((key, index) => (
-            <input
-              key={index}
-              type="text"
-              name={key}
-              value={inputs[key]}
-              onChange={handleChange}
-              placeholder={`Enter ${key}`}
-              className="form-input"
-            />
-          ))}
-          <button type="submit" className="form-button">Go</button>
-        </form>
+        <p>YOUR YEARLY PREDICTION</p>
+
+
+        {showMessage ? (
+          <div className="message-container">
+            <p>
+              There are many variations of passages of Lorem Ipsum available, but the majority 
+              have suffered alteration in some form, by injected humour, or randomised words 
+              which don't look even slightly believable. If you are going to use a passage of 
+              Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the 
+              middle of text. All the Lorem Ipsum generators on the Internet tend to repeat 
+              predefined chunks as necessary, making this the first true generator on the 
+              Internet. It uses a dictionary of over 200 Latin words, combined with a handful 
+              of model sentence structures, to generate Lorem Ipsum which looks reasonable. 
+              The generated Lorem Ipsum is therefore always free from repetition, injected 
+              humour, or non-characteristic words etc.
+            </p>
+            <button className="form-button" onClick={handleRegenerate}>Regenerate Prediction</button>
+          </div>
+        ) : (
+          <>
+
+
+            <form onSubmit={handleSubmit}>
+              {Object.keys(inputs).map((key, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  name={key}
+                  value={inputs[key]}
+                  onChange={handleChange}
+                  placeholder={`Enter ${key}`}
+                  className="form-input"
+                />
+              ))}
+              <button type="submit" className="form-button">Go</button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
